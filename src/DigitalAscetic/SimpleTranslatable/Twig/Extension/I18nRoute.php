@@ -1,6 +1,6 @@
 <?php
 
-namespace LocaleSupport\Twig\Extension;
+namespace DigitalAscetic\SimpleTranslatable\Twig\Extension;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
