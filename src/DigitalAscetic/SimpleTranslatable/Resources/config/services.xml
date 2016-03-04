@@ -16,7 +16,7 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="locale_support.translatable_listener" class="DigitalAscetic\\SimpleTranslatable\EventListener\TranslatableListener">
+        <service id="locale_support.translatable_listener" class="DigitalAscetic\SimpleTranslatable\EventListener\TranslatableListener">
             <tag name="doctrine.event_subscriber"/>
         </service>
 
