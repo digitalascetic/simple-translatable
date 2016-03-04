@@ -59,8 +59,8 @@ class EntityRouteListener implements EventSubscriberInterface {
 
     //print_r($routeName);
     //print_r($params);
-    print_r($route->getOptions());
-    exit();
+   // print_r($route->getOptions());
+   // exit();
 
   }
 }

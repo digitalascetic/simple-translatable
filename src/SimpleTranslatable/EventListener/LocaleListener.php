@@ -5,6 +5,9 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ *
+ */
 class LocaleListener implements EventSubscriberInterface {
   private $defaultLocale;
 
@@ -13,7 +16,9 @@ class LocaleListener implements EventSubscriberInterface {
   }
 
   public function onKernelRequest(GetResponseEvent $event) {
+
     $request = $event->getRequest();
+
     if (!$request->hasPreviousSession()) {
       return;
     }

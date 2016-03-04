@@ -14,6 +14,10 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 
+/**
+ * This listener dynamically establish the correct mapping
+ * for translatable entity relations
+ */
 class TranslatableListener implements EventSubscriber {
 
   public function getSubscribedEvents() {

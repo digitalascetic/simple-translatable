@@ -8,6 +8,8 @@
 
 namespace SimpleTranslatable\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 trait TranslatableBehaviour {
 
