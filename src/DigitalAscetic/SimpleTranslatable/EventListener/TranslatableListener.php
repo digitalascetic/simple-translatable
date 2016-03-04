@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: martino
- * Date: 24/02/16
- * Time: 00:04
- */
 
 namespace DigitalAscetic\SimpleTranslatable\EventListener;
 

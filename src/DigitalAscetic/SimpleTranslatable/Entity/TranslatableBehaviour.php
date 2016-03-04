@@ -9,7 +9,7 @@
 namespace DigitalAscetic\SimpleTranslatable\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Doctrine\ORM\Mapping as ORM;
 
 trait TranslatableBehaviour {
 
