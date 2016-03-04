@@ -6,7 +6,7 @@
  * Time: 01:40
  */
 
-namespace SimpleTranslatable\EventListener;
+namespace DigitalAscetic\SimpleTranslatable\EventListener;
 
 
 use Symfony\Component\DependencyInjection\ContainerInterface;

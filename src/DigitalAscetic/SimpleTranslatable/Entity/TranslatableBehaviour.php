@@ -6,7 +6,7 @@
  * Time: 23:58
  */
 
-namespace SimpleTranslatable\Entity;
+namespace DigitalAscetic\SimpleTranslatable\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

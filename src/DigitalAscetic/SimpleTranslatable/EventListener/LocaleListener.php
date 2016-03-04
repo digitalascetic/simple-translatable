@@ -1,5 +1,5 @@
 <?php
-namespace SimpleTranslatable\EventListener;
+namespace DigitalAscetic\SimpleTranslatable\EventListener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

@@ -6,7 +6,7 @@
  * Time: 00:04
  */
 
-namespace SimpleTranslatable\EventListener;
+namespace DigitalAscetic\SimpleTranslatable\EventListener;
 
 
 use Doctrine\ORM\Mapping\ClassMetadata;

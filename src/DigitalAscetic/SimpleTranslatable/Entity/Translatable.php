@@ -6,7 +6,7 @@
  * Time: 23:47
  */
 
-namespace SimpleTranslatable\Entity;
+namespace DigitalAscetic\SimpleTranslatable\Entity;
 
 
 interface Translatable {

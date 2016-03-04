@@ -6,12 +6,12 @@
 
     <services>
 
-        <service id="locale_support.locale_listener" class="SimpleTranslatable\EventListener\LocaleListener">
+        <service id="locale_support.locale_listener" class="DigitalAscetic\SimpleTranslatable\EventListener\LocaleListener">
             <argument type="string" id="kernel.default_locale"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="locale_support.entity_route_listener" class="SimpleTranslatable\EventListener\EntityRouteListener">
+        <service id="locale_support.entity_route_listener" class="DigitalAscetic\SimpleTranslatable\EventListener\EntityRouteListener">
             <argument type="service" id="service_container"/>
             <tag name="kernel.event_subscriber"/>
         </service>
@@ -20,7 +20,7 @@
             <tag name="doctrine.event_subscriber"/>
         </service>
          -->
-        <service id="locale_support.i18nRoute" class="SimpleTranslatable\Twig\Extension\I18nRoute"
+        <service id="locale_support.i18nRoute" class="DigitalAscetic\SimpleTranslatable\Twig\Extension\I18nRoute"
                  public="false">
             <tag name="twig.extension"/>
             <argument type="service" id="service_container"/>

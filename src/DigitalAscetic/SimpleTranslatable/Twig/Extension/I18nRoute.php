@@ -5,7 +5,7 @@ namespace LocaleSupport\Twig\Extension;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use JMS\I18nRoutingBundle\Router\I18nRouter;
-use SimpleTranslatable\Entity\TranslatableBehaviour;
+use DigitalAscetic\SimpleTranslatable\Entity\TranslatableBehaviour;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
