@@ -1,11 +1,6 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: martino
- * Date: 09/02/16
- * Time: 17:12
- */
-namespace SimpleTranslatable\DependencyInjection;
+
+namespace DigitalAscetic\SimpleTranslatable\DependencyInjection;
 
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -13,7 +8,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class SimpleTranslatableExtension extends Extension {
+class DigitalAsceticSimpleTranslatableExtension extends Extension {
 
   public function load(array $configs, ContainerBuilder $container) {
 
