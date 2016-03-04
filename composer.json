@@ -1,0 +1,25 @@
+{
+  "name": "digitalascetic/simple-translatable",
+  "version": "1.0.0",
+  "license": "Proprietary",
+  "type": "library",
+  "description": "Makes your entities translatables",
+  "authors": [
+    {
+      "name": "Martino Piccinato",
+      "email": "mp@digital-ascetic.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "": "src/"
+    }
+  },
+  "require": {
+    "php": ">=5.3.9",
+    "sensio/distribution-bundle": "~4.0",
+    "doctrine/orm": "^2.4.8",
+    "doctrine/doctrine-bundle": "~1.4",
+    "jms/i18n-routing-bundle": "1.*"
+  }
+}
