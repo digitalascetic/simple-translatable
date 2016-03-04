@@ -33,7 +33,7 @@ class TranslatableListener implements EventSubscriber {
 
     $reflectionClass = $metadata->getReflectionClass();
 
-    if (!$reflectionClass->implementsInterface('DigitalAscetiv\SimpleTranslatable\Entity\Translatable')) {
+    if (!$reflectionClass->implementsInterface('DigitalAscetic\SimpleTranslatable\Entity\Translatable')) {
       return;
     }
 
