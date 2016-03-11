@@ -45,6 +45,7 @@ class TranslatableListener implements EventSubscriber {
             'referencedColumnName' => 'id',
             'onDelete' => 'CASCADE',
             'onUpdate' => 'CASCADE',
+            'nullable' => true
           ),
         )
       )
