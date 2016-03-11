@@ -54,15 +54,25 @@ trait TranslatableBehaviour {
   /**
    * @return mixed
    */
-  public function getTranslation($locale = null) {
+  public function getTranslation($locale) {
+
+    if ($this->locale == $locale) {
+      return $this;
+    }
+
+    if ($this->translationSource && $this->translationSource->getLocale() == $locale) {
+      return $this->translationSource;
+    }
 
     if ($this->translationSource) {
       $translations = $this->translationSource->getTranslations();
     }
     else {
       $translations = $this->translations;
+
     }
 
+    //dump($translations);
     /** @var TranslatableBehaviour $translation */
     foreach ($translations as $translation) {
       if ($translation->getLocale() == $locale) {
