@@ -6,25 +6,36 @@
 
     <services>
 
-        <service id="locale_support.locale_listener" class="DigitalAscetic\SimpleTranslatable\EventListener\LocaleListener">
+        <service id="simple_translatable.locale_listener"
+                 class="DigitalAscetic\SimpleTranslatable\EventListener\LocaleListener">
             <argument type="string" id="kernel.default_locale"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="locale_support.entity_route_listener" class="DigitalAscetic\SimpleTranslatable\EventListener\EntityRouteListener">
+        <service id="simple_translatable.entity_route_listener"
+                 class="DigitalAscetic\SimpleTranslatable\EventListener\EntityRouteListener">
             <argument type="service" id="service_container"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="locale_support.translatable_listener" class="DigitalAscetic\SimpleTranslatable\EventListener\TranslatableListener">
+        <service id="simple_translatable.translatable_listener"
+                 class="DigitalAscetic\SimpleTranslatable\EventListener\TranslatableListener">
             <tag name="doctrine.event_subscriber"/>
         </service>
 
-        <service id="locale_support.i18nRoute" class="DigitalAscetic\SimpleTranslatable\Twig\Extension\I18nRoute"
+        <service id="simple_translatable.i18nPath" class="DigitalAscetic\SimpleTranslatable\Twig\Extension\I18nPath"
                  public="false">
             <tag name="twig.extension"/>
             <argument type="service" id="service_container"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="simple_translatable.translatable_service"/>
+        </service>
+
+        <service id="simple_translatable.translatable_service"
+                 class="DigitalAscetic\SimpleTranslatable\Service\TranslatableService">
+            <argument type="service" id="service_container"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument>%simple_translatable.locales%</argument>
         </service>
 
     </services>

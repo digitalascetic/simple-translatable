@@ -2,6 +2,7 @@
 
 namespace DigitalAscetic\SimpleTranslatable\Twig\Extension;
 
+use DigitalAscetic\SimpleTranslatable\Service\TranslatableService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use JMS\I18nRoutingBundle\Router\I18nRouter;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Twig_Extension;
 
 
-class I18nRoute extends Twig_Extension {
+class I18nPath extends Twig_Extension {
 
   /**
    * @var ContainerInterface $container
@@ -25,13 +26,18 @@ class I18nRoute extends Twig_Extension {
    */
   private $em;
 
+  /** @var  TranslatableService $translatableService */
+  private $translatableService;
+
 
   public function __construct(
     ContainerInterface $container,
-    EntityManager $em
+    EntityManager $em,
+    TranslatableService $translatableService
   ) {
     $this->container = $container;
     $this->em = $em;
+    $this->translatableService = $translatableService;
   }
 
   /**
@@ -39,20 +45,16 @@ class I18nRoute extends Twig_Extension {
    */
   public function getFunctions() {
     return array(
-      new \Twig_SimpleFunction('i18nRoute', array($this, 'getI18nRoute')),
+      new \Twig_SimpleFunction('path', array($this, 'getI18nPath')),
     );
   }
 
-  public function getI18nRoute($routeName = null, $params = null, $locale = null) {
+  public function getI18nPath($routeName = null, $params = null) {
 
-    /** @var I18nRouter $router */
-    $router = $this->container->get('router');
+    $locale = $this->container->getParameter('default_locale');
 
     /** @var Request $request */
     $request = $this->container->get('request');
-
-    /** @var RouteCollection $routeCollection */
-    $routeCollection = $router->getOriginalRouteCollection();
 
     if (!$routeName) {
       $routeName = $request->get('_route');
@@ -65,9 +67,19 @@ class I18nRoute extends Twig_Extension {
       $params = array();
     }
 
+    if (isset($params['_locale'])) {
+      $locale = $params['_locale'];
+    }
+
     if (!$locale) {
       $locale = $request->getLocale();
     }
+
+    /** @var I18nRouter $router */
+    $router = $this->container->get('router');
+
+    /** @var RouteCollection $routeCollection */
+    $routeCollection = $router->getOriginalRouteCollection();
 
     /** @var Route $route */
     $route = $routeCollection->get($routeName);
@@ -84,12 +96,21 @@ class I18nRoute extends Twig_Extension {
       /** @var EntityRepository $repo */
       $repo = $this->em->getRepository($translatable_class);
 
+      if (!isset($params[$translatable_slug_param])) {
+        $params = array_merge($params, $router->matchRequest($request));
+        unset($params['_route']);
+      }
+
       /** @var TranslatableBehaviour $translatableEntity */
       $translatableEntity = $repo->findOneBy(
         array($translatable_slug => $params[$translatable_slug_param])
       );
 
-      $translatedEntity = $translatableEntity->getTranslation($locale);
+      if (!$translatableEntity) {
+        return null;
+      }
+
+      $translatedEntity = $this->translatableService->getTranslation($translatableEntity, $locale);
 
       if (!$translatedEntity) {
         return null;
