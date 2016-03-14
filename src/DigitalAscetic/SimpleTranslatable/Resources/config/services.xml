@@ -12,12 +12,6 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="simple_translatable.entity_route_listener"
-                 class="DigitalAscetic\SimpleTranslatable\EventListener\EntityRouteListener">
-            <argument type="service" id="service_container"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
         <service id="simple_translatable.translatable_listener"
                  class="DigitalAscetic\SimpleTranslatable\EventListener\TranslatableListener">
             <tag name="doctrine.event_subscriber"/>
@@ -28,6 +22,13 @@
             <tag name="twig.extension"/>
             <argument type="service" id="service_container"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="simple_translatable.translatable_service"/>
+        </service>
+
+        <service id="simple_translatable.i18nContent"
+                 class="DigitalAscetic\SimpleTranslatable\Twig\Extension\I18nContent"
+                 public="false">
+            <tag name="twig.extension"/>
             <argument type="service" id="simple_translatable.translatable_service"/>
         </service>
 
