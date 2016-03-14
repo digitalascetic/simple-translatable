@@ -55,7 +55,11 @@ class TranslatableService {
 
     if ($source->getTranslations()) {
       foreach ($source->getTranslations() as $translation) {
-        if (!$includeSelf && $translation->getLocale() == $entity->getLocale()) {
+        if (!$includeSelf && $translation->getLocale() == $entity->getLocale() || in_array(
+            $translation->getLocale(),
+            $translatedLocales
+          )
+        ) {
           continue;
         }
         $translatedLocales[] = $translation->getLocale();

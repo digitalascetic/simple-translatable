@@ -34,18 +34,19 @@ class I18nContent extends Twig_Extension {
       new \Twig_SimpleFunction('missTranslations', array($this, 'missTranslations')),
       new \Twig_SimpleFunction('translatedLocales', array($this, 'getTranslatedLocales')),
       new \Twig_SimpleFunction('untranslatedLocales', array($this, 'getUntranslatedLocales')),
+      new \Twig_SimpleFunction('translation', array($this, 'getTranslation')),
     );
   }
 
-  public function hasTranslations(Translatable $entity, $includeSelf = true) {
+  public function hasTranslations(Translatable $entity) {
 
-    return (count($this->getTranslatedLocales($entity, $includeSelf)) > 0);
+    return (count($this->getTranslatedLocales($entity, false)) > 0);
 
   }
 
   public function missTranslations(Translatable $entity) {
 
-    return count($this->getUntranslatedLocales($entity) > 0);
+    return (count($this->getUntranslatedLocales($entity)) > 0);
 
   }
 
@@ -55,6 +56,10 @@ class I18nContent extends Twig_Extension {
 
   public function getUntranslatedLocales(Translatable $entity) {
     return $this->translatableService->getUntranslatedLocales($entity);
+  }
+
+  public function getTranslation(Translatable $entity, $locale) {
+    return $this->translatableService->getTranslation($entity, $locale);
   }
 
   /**
