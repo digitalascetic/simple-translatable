@@ -12,9 +12,15 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="simple_translatable.translatable_listener"
-                 class="DigitalAscetic\SimpleTranslatable\EventListener\TranslatableListener">
+        <service id="simple_translatable.translatable_mapping_listener"
+                 class="DigitalAscetic\SimpleTranslatable\EventListener\TranslatableMappingListener">
             <tag name="doctrine.event_subscriber"/>
+        </service>
+
+        <service id="simple_translatable.translatable_persistence_listener"
+                 class="DigitalAscetic\SimpleTranslatable\EventListener\TranslatablePersistenceListener">
+            <tag name="doctrine.event_subscriber"/>
+            <argument type="service" id="simple_translatable.translatable_service"/>
         </service>
 
         <service id="simple_translatable.i18nPath" class="DigitalAscetic\SimpleTranslatable\Twig\Extension\I18nPath"

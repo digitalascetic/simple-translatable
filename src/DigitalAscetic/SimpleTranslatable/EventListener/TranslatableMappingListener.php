@@ -12,7 +12,7 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
  * This listener dynamically establish the correct mapping
  * for translatable entity relations
  */
-class TranslatableListener implements EventSubscriber {
+class TranslatableMappingListener implements EventSubscriber {
 
   public function getSubscribedEvents() {
     return array(
