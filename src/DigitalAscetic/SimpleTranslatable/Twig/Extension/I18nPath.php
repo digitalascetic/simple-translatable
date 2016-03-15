@@ -9,6 +9,7 @@ use JMS\I18nRoutingBundle\Router\I18nRouter;
 use DigitalAscetic\SimpleTranslatable\Entity\TranslatableBehaviour;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Twig_Extension;
@@ -83,6 +84,10 @@ class I18nPath extends Twig_Extension {
 
     /** @var Route $route */
     $route = $routeCollection->get($routeName);
+
+    if (!$route) {
+      throw new RouteNotFoundException("Cannot find route with name " . $routeName);
+    }
 
     $translatable_class = $route->getOption('translatable_class');
 
