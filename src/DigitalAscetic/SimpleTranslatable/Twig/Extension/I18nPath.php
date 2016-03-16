@@ -98,32 +98,36 @@ class I18nPath extends Twig_Extension {
         'translatable_slug_param'
       ) : $translatable_slug;
 
-      /** @var EntityRepository $repo */
-      $repo = $this->em->getRepository($translatable_class);
-
+      // Act just in case there's no "slug" parameter explicitly set
       if (!isset($params[$translatable_slug_param])) {
+
+
+        /** @var EntityRepository $repo */
+        $repo = $this->em->getRepository($translatable_class);
+
         $params = array_merge($params, $router->matchRequest($request));
         unset($params['_route']);
+
+        /** @var TranslatableBehaviour $translatableEntity */
+        $translatableEntity = $repo->findOneBy(
+          array($translatable_slug => $params[$translatable_slug_param])
+        );
+
+        if (!$translatableEntity) {
+          return null;
+        }
+
+        $translatedEntity = $this->translatableService->getTranslation($translatableEntity, $locale);
+
+        if (!$translatedEntity) {
+          return null;
+        }
+
+        $translatedSlug = call_user_func(array($translatedEntity, 'get' . ucfirst($translatable_slug)));
+
+        $params = array_merge($params, array($translatable_slug_param => $translatedSlug));
+
       }
-
-      /** @var TranslatableBehaviour $translatableEntity */
-      $translatableEntity = $repo->findOneBy(
-        array($translatable_slug => $params[$translatable_slug_param])
-      );
-
-      if (!$translatableEntity) {
-        return null;
-      }
-
-      $translatedEntity = $this->translatableService->getTranslation($translatableEntity, $locale);
-
-      if (!$translatedEntity) {
-        return null;
-      }
-
-      $translatedSlug = call_user_func(array($translatedEntity, 'get' . ucfirst($translatable_slug)));
-
-      $params = array_merge($params, array($translatable_slug_param => $translatedSlug));
 
     }
 
