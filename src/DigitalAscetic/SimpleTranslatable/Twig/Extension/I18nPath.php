@@ -52,7 +52,7 @@ class I18nPath extends Twig_Extension {
 
   public function getI18nPath($routeName = null, $params = null) {
 
-    $locale = $this->container->getParameter('default_locale');
+    $locale = null;
 
     /** @var Request $request */
     $request = $this->container->get('request');
@@ -74,6 +74,10 @@ class I18nPath extends Twig_Extension {
 
     if (!$locale) {
       $locale = $request->getLocale();
+    }
+
+    if (!$locale) {
+      $locale = $this->container->getParameter('default_locale');
     }
 
     /** @var I18nRouter $router */
@@ -100,7 +104,6 @@ class I18nPath extends Twig_Extension {
 
       // Act just in case there's no "slug" parameter explicitly set
       if (!isset($params[$translatable_slug_param])) {
-
 
         /** @var EntityRepository $repo */
         $repo = $this->em->getRepository($translatable_class);
