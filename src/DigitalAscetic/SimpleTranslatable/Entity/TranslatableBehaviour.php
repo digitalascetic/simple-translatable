@@ -28,7 +28,7 @@ trait TranslatableBehaviour {
 
   private $translationSource;
 
-  private $translations;
+  private $translations = array();
 
   /**
    * @return mixed
