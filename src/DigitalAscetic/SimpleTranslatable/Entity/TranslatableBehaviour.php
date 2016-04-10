@@ -61,9 +61,11 @@ trait TranslatableBehaviour {
   /**
    * @param mixed $translationSource
    */
-  public function setTranslationSource(Translatable $translationSource) {
-    $this->translationSource = $translationSource;
-    $this->translationSource->getTranslations()->add($this);
+  public function setTranslationSource(Translatable $translationSource = null) {
+    if ($translationSource != null) {
+      $this->translationSource = $translationSource;
+      $this->translationSource->getTranslations()->add($this);
+    }
   }
 
   /**
