@@ -8,6 +8,7 @@
 
 namespace DigitalAscetic\SimpleTranslatable\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,7 +29,8 @@ trait TranslatableBehaviour {
 
   private $translationSource;
 
-  private $translations = array();
+  /** @var  ArrayCollection */
+  private $translations;
 
   /**
    * @return mixed
@@ -50,7 +52,7 @@ trait TranslatableBehaviour {
   }
 
   /**
-   * @return mixed
+   * @return ArrayCollection
    */
   public function getTranslations() {
     return $this->translations;
@@ -59,8 +61,9 @@ trait TranslatableBehaviour {
   /**
    * @param mixed $translationSource
    */
-  public function setTranslationSource($translationSource) {
+  public function setTranslationSource(Translatable $translationSource) {
     $this->translationSource = $translationSource;
+    $this->translationSource->getTranslations()->add($this);
   }
 
   /**

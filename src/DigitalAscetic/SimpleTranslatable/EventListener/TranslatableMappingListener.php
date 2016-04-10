@@ -3,6 +3,7 @@
 namespace DigitalAscetic\SimpleTranslatable\EventListener;
 
 
+use DigitalAscetic\SimpleTranslatable\Entity\Translatable;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
@@ -27,7 +28,7 @@ class TranslatableMappingListener implements EventSubscriber {
 
     $reflectionClass = $metadata->getReflectionClass();
 
-    if (!$reflectionClass->implementsInterface('DigitalAscetic\SimpleTranslatable\Entity\Translatable')) {
+    if (!$reflectionClass->implementsInterface(Translatable::class)) {
       return;
     }
 
@@ -38,7 +39,7 @@ class TranslatableMappingListener implements EventSubscriber {
         'targetEntity' => $className,
         'fieldName' => 'translationSource',
         'inversedBy' => 'translations',
-        'cascade' => array('persist'),
+        'cascade' => array('persist', 'remove', 'merge'),
         'joinColumns' => array(
           array(
             'name' => 'translationSource',
@@ -55,7 +56,8 @@ class TranslatableMappingListener implements EventSubscriber {
       array(
         'targetEntity' => $className,
         'fieldName' => 'translations',
-        'mappedBy' => 'translationSource'
+        'mappedBy' => 'translationSource',
+        'cascade' => array('persist', 'remove', 'merge')
       )
     );
   }
