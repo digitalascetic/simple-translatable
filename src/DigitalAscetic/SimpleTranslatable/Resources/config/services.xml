@@ -29,6 +29,7 @@
             <argument type="service" id="service_container"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="simple_translatable.translatable_service"/>
+            <argument type="service" id="request_stack"/>
         </service>
 
         <service id="simple_translatable.translatable_service"

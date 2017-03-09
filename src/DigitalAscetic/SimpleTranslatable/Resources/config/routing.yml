@@ -1,0 +1,5 @@
+simple_translatable.switcher:
+    path: /change-locale/{_locale}
+    defaults: { _controller: SimpleTranslatableBundle:LocaleSwitcher:changeLocale, _locale: %locale% }
+    methods:  [GET]
+    options: { i18n: false }

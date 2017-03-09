@@ -4,7 +4,7 @@ Simple Translatable
 This bundle provides common backend services for eatout websites.
 
 **Stable version**: none
-**Current version**: 1.0.*\@dev
+**Current version**: 2.0.*\@dev
 
 
 Installation
@@ -14,7 +14,7 @@ Add the following lines to your composer.json
 
       "require": {
         ...
-        "digitalascetic/simple-translatable": "dev-master"
+        "digitalascetic/simple-translatable": "2.0.*"
       }
       
  
