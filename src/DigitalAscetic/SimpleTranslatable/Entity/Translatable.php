@@ -9,12 +9,17 @@
 namespace DigitalAscetic\SimpleTranslatable\Entity;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 interface Translatable {
 
-  public function getTranslationSource();
+    public function getTranslationSource();
 
-  public function getTranslations();
+    /**
+     * @return ArrayCollection
+     */
+    public function getTranslations();
 
-  public function getLocale();
+    public function getLocale();
 
 }

@@ -14,25 +14,25 @@ use Doctrine\ORM\EntityRepository;
 
 class TranslatableRepository extends EntityRepository {
 
-  public function getTranslatedLocales(Translatable $entity) {
+    public function getTranslatedLocales(Translatable $entity) {
 
-    $translatedLocales = array();
+        $translatedLocales = array();
 
-    if ($entity->getTranslationSource()) {
-      /** @var Translatable $source */
-      $source = $entity->getTranslationSource();
-      foreach ($source->getTranslations() as $translation) {
-        $translatedLocales[] = $translation->getLocale();
-      }
+        if ($entity->getTranslationSource()) {
+            /** @var Translatable $source */
+            $source = $entity->getTranslationSource();
+            foreach ($source->getTranslations() as $translation) {
+                $translatedLocales[] = $translation->getLocale();
+            }
+        }
+
+        return $translatedLocales;
+
     }
 
-    return $translatedLocales;
-
-  }
-
-  public function getUntranslatedLocales(Translatable $entity) {
+    public function getUntranslatedLocales(Translatable $entity) {
 
 
-  }
+    }
 
 }

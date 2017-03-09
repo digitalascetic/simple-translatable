@@ -15,99 +15,104 @@ use DigitalAscetic\SimpleTranslatable\Entity\Translatable;
 
 class TranslatableService {
 
-  /** @var  \string[] $locales */
-  private $locales;
+    /** @var  \string[] $locales */
+    private $locales;
 
-  /** @var  ContainerInterface $container */
-  private $container;
+    /** @var  ContainerInterface $container */
+    private $container;
 
-  /** @var  EntityManager $entityManager */
-  private $entityManager;
+    /** @var  EntityManager $entityManager */
+    private $entityManager;
 
-  /**
-   * TranslatableService constructor.
-   * @param EntityManager $entityManager
-   * @param ConfigurationInterface $container
-   */
-  public function __construct(ContainerInterface $container, EntityManager $entityManager, $locales) {
-    $this->entityManager = $entityManager;
-    $this->container = $container;
-    $this->locales = $locales;
-  }
-
-  public function getTranslatedLocales(Translatable $entity, $includeSelf = true) {
-
-    /** @var Translatable $source */
-    $source = $entity->getTranslationSource();
-
-    if ($includeSelf) {
-      $translatedLocales = array($entity->getLocale());
-    }
-    else {
-      $translatedLocales = array();
+    /**
+     * TranslatableService constructor.
+     * @param ContainerInterface $container
+     * @param EntityManager $entityManager
+     * @param array $locales
+     */
+    public function __construct(ContainerInterface $container, EntityManager $entityManager, $locales) {
+        $this->entityManager = $entityManager;
+        $this->container = $container;
+        $this->locales = $locales;
     }
 
-    // Add source locale
-    if (($source != $entity)) {
-      $translatedLocales[] = $source->getLocale();
-    }
+    public function getTranslatedLocales(Translatable $entity, $includeSelf = true) {
 
+        /** @var Translatable $source */
+        $source = $entity->getTranslationSource();
 
-    if ($source->getTranslations()) {
-      foreach ($source->getTranslations() as $translation) {
-        if (!$includeSelf && $translation->getLocale() == $entity->getLocale()) {
-          continue;
+        if ($includeSelf) {
+            $translatedLocales = array($entity->getLocale());
         }
-        $translatedLocales[] = $translation->getLocale();
-      }
-    }
+        else {
+            $translatedLocales = array();
+        }
 
-    return $translatedLocales;
+        // Add source locale
+        if (($source != $entity)) {
+            $translatedLocales[] = $source->getLocale();
+        }
 
-  }
 
-  public function getUntranslatedLocales(Translatable $entity) {
+        if ($source->getTranslations()) {
+            foreach ($source->getTranslations() as $translation) {
+                if (!$includeSelf && $translation->getLocale() == $entity->getLocale() || in_array(
+                        $translation->getLocale(),
+                        $translatedLocales
+                    )
+                ) {
+                    continue;
+                }
+                $translatedLocales[] = $translation->getLocale();
+            }
+        }
 
-    return array_diff($this->locales, $this->getTranslatedLocales($entity, true));
-
-  }
-
-  /**
-   * @return Translatable|null
-   */
-  public function getTranslation(Translatable $entity, $locale) {
-
-    if ($entity->getLocale() == $locale) {
-      return $entity;
-    }
-
-    if ($entity->getTranslationSource() && $entity->getTranslationSource()->getLocale() == $locale) {
-      return $entity->getTranslationSource();
-    }
-
-    if ($entity->getTranslationSource()) {
-      $translations = $entity->getTranslationSource()->getTranslations();
-    }
-    else {
-      $translations = $entity->getTranslations();
+        return $translatedLocales;
 
     }
 
-    /** @var Translatable $translation */
-    foreach ($translations as $translation) {
-      if ($translation->getLocale() == $locale) {
-        return $translation;
-      }
+    public function getUntranslatedLocales(Translatable $entity) {
+
+        return array_diff($this->locales, $this->getTranslatedLocales($entity, true));
+
     }
 
-    return null;
-  }
+    /**
+     * @return Translatable|null
+     */
+    public function getTranslation(Translatable $entity, $locale) {
 
-  /**
-   * @return \string[]
-   */
-  public function getLocales() {
-    return $this->locales;
-  }
+        if ($entity->getLocale() == $locale) {
+            return $entity;
+        }
+
+        if ($entity->getTranslationSource() && $entity->getTranslationSource()->getLocale() == $locale) {
+            return $entity->getTranslationSource();
+        }
+
+        if ($entity->getTranslationSource()) {
+            $translations = $entity->getTranslationSource()->getTranslations();
+        }
+        else {
+            $translations = $entity->getTranslations();
+
+        }
+
+        /** @var Translatable $translation */
+        foreach ($translations as $translation) {
+            if ($translation->getLocale() == $locale) {
+                return $translation;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return \string[]
+     */
+    public function getLocales() {
+        return $this->locales;
+    }
 
 }

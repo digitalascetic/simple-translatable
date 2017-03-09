@@ -9,7 +9,7 @@ use JMS\I18nRoutingBundle\Router\I18nRouter;
 use DigitalAscetic\SimpleTranslatable\Entity\TranslatableBehaviour;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Twig_Extension;
@@ -30,20 +30,15 @@ class I18nPath extends Twig_Extension {
     /** @var  TranslatableService $translatableService */
     private $translatableService;
 
-    /** @var  RequestStack $requestStack */
-    private $requestStack;
-
 
     public function __construct(
         ContainerInterface $container,
         EntityManager $em,
-        TranslatableService $translatableService,
-        RequestStack $requestStack
+        TranslatableService $translatableService
     ) {
         $this->container = $container;
         $this->em = $em;
         $this->translatableService = $translatableService;
-        $this->requestStack = $requestStack;
     }
 
     /**
@@ -55,10 +50,12 @@ class I18nPath extends Twig_Extension {
         );
     }
 
-    public function getI18nPath($routeName = NULL, $params = NULL) {
+    public function getI18nPath($routeName = null, $params = null) {
+
+        $locale = null;
 
         /** @var Request $request */
-        $request = $this->requestStack->getCurrentRequest();
+        $request = $this->container->get('request');
 
         if (!$routeName) {
             $routeName = $request->get('_route');
@@ -74,11 +71,13 @@ class I18nPath extends Twig_Extension {
         if (isset($params['_locale'])) {
             $locale = $params['_locale'];
         }
-        else {
+
+        if (!$locale) {
             $locale = $request->getLocale();
-            if (!$locale) {
-                $locale = $this->container->getParameter('default_locale');
-            }
+        }
+
+        if (!$locale) {
+            $locale = $this->container->getParameter('default_locale');
         }
 
         /** @var I18nRouter $router */
@@ -90,6 +89,10 @@ class I18nPath extends Twig_Extension {
         /** @var Route $route */
         $route = $routeCollection->get($routeName);
 
+        if (!$route) {
+            throw new RouteNotFoundException("Cannot find route with name " . $routeName);
+        }
+
         $translatable_class = $route->getOption('translatable_class');
 
         if ($translatable_class) {
@@ -99,33 +102,35 @@ class I18nPath extends Twig_Extension {
                 'translatable_slug_param'
             ) : $translatable_slug;
 
-            /** @var EntityRepository $repo */
-            $repo = $this->em->getRepository($translatable_class);
-
+            // Act just in case there's no "slug" parameter explicitly set
             if (!isset($params[$translatable_slug_param])) {
+
+                /** @var EntityRepository $repo */
+                $repo = $this->em->getRepository($translatable_class);
+
                 $params = array_merge($params, $router->matchRequest($request));
                 unset($params['_route']);
+
+                /** @var TranslatableBehaviour $translatableEntity */
+                $translatableEntity = $repo->findOneBy(
+                    array($translatable_slug => $params[$translatable_slug_param])
+                );
+
+                if (!$translatableEntity) {
+                    return null;
+                }
+
+                $translatedEntity = $this->translatableService->getTranslation($translatableEntity, $locale);
+
+                if (!$translatedEntity) {
+                    return null;
+                }
+
+                $translatedSlug = call_user_func(array($translatedEntity, 'get' . ucfirst($translatable_slug)));
+
+                $params = array_merge($params, array($translatable_slug_param => $translatedSlug));
+
             }
-
-            /** @var TranslatableBehaviour $translatableEntity */
-            $translatableEntity = $repo->findOneBy(
-                array($translatable_slug => $params[$translatable_slug_param])
-            );
-
-            if (!$translatableEntity) {
-                return NULL;
-            }
-
-            $translatedEntity = $this->translatableService->getTranslation($translatableEntity, $locale);
-
-            // No translations found in the current language.
-            if (!$translatedEntity) {
-                return NULL;
-            }
-
-            $translatedSlug = call_user_func(array($translatedEntity, 'get' . ucfirst($translatable_slug)));
-
-            $params = array_merge($params, array($translatable_slug_param => $translatedSlug));
 
         }
 

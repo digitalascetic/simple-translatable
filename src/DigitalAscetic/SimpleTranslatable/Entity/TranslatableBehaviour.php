@@ -8,66 +8,71 @@
 
 namespace DigitalAscetic\SimpleTranslatable\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 trait TranslatableBehaviour {
 
-  /**
-   * @var string The language of this entity ("es", "en" etc.)
-   *
-   * @ORM\Column(name="locale", type="string", length=2)
-   *
-   * @Assert\NotBlank()
-   * @Assert\Length(
-   *      min = 2,
-   *      max = 2
-   * )
-   */
-  private $locale;
+    /**
+     * @var string The language of this entity ("es", "en" etc.)
+     *
+     * @ORM\Column(name="locale", type="string", length=2)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 2
+     * )
+     */
+    private $locale;
 
-  private $translationSource;
+    private $translationSource;
 
-  private $translations;
+    /** @var  ArrayCollection */
+    private $translations;
 
-  /**
-   * @return mixed
-   */
-  public function getLocale() {
-    return $this->locale;
-  }
-
-  /**
-   * @return mixed
-   */
-  public function getTranslationSource() {
-    if ($this->translationSource) {
-      return $this->translationSource;
+    /**
+     * @return mixed
+     */
+    public function getLocale() {
+        return $this->locale;
     }
-    else {
-      return $this;
+
+    /**
+     * @return mixed
+     */
+    public function getTranslationSource() {
+        if ($this->translationSource) {
+            return $this->translationSource;
+        }
+        else {
+            return $this;
+        }
     }
-  }
 
-  /**
-   * @return mixed
-   */
-  public function getTranslations() {
-    return $this->translations;
-  }
+    /**
+     * @return ArrayCollection
+     */
+    public function getTranslations() {
+        return $this->translations;
+    }
 
-  /**
-   * @param mixed $translationSource
-   */
-  public function setTranslationSource($translationSource) {
-    $this->translationSource = $translationSource;
-  }
+    /**
+     * @param mixed $translationSource
+     */
+    public function setTranslationSource(Translatable $translationSource = null) {
+        if ($translationSource != null) {
+            $this->translationSource = $translationSource;
+            $this->translationSource->getTranslations()->add($this);
+        }
+    }
 
-  /**
-   * @param mixed $locale
-   */
-  public function setLocale($locale) {
-    $this->locale = $locale;
-  }
+    /**
+     * @param mixed $locale
+     */
+    public function setLocale($locale) {
+        $this->locale = $locale;
+    }
 
 }
