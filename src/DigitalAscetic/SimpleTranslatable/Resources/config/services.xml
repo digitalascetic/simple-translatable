@@ -9,6 +9,7 @@
         <service id="simple_translatable.locale_listener"
                  class="DigitalAscetic\SimpleTranslatable\EventListener\LocaleListener">
             <argument type="string" id="kernel.default_locale"/>
+            <argument>%simple_translatable.locales%</argument>
             <tag name="kernel.event_subscriber"/>
         </service>
 
