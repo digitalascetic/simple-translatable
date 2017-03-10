@@ -9,6 +9,7 @@ use JMS\I18nRoutingBundle\Router\I18nRouter;
 use DigitalAscetic\SimpleTranslatable\Entity\TranslatableBehaviour;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -30,15 +31,20 @@ class I18nPath extends Twig_Extension {
     /** @var  TranslatableService $translatableService */
     private $translatableService;
 
+    /** @var  RequestStack $requestStack */
+    private $requestStack;
+
 
     public function __construct(
         ContainerInterface $container,
         EntityManager $em,
-        TranslatableService $translatableService
+        TranslatableService $translatableService,
+        RequestStack $requestStack
     ) {
         $this->container = $container;
         $this->em = $em;
         $this->translatableService = $translatableService;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -55,7 +61,7 @@ class I18nPath extends Twig_Extension {
         $locale = null;
 
         /** @var Request $request */
-        $request = $this->container->get('request');
+        $request = $this->requestStack->getCurrentRequest();
 
         if (!$routeName) {
             $routeName = $request->get('_route');
@@ -71,13 +77,11 @@ class I18nPath extends Twig_Extension {
         if (isset($params['_locale'])) {
             $locale = $params['_locale'];
         }
-
-        if (!$locale) {
+        else {
             $locale = $request->getLocale();
-        }
-
-        if (!$locale) {
-            $locale = $this->container->getParameter('default_locale');
+            if (!$locale) {
+                $locale = $this->container->getParameter('default_locale');
+            }
         }
 
         /** @var I18nRouter $router */
