@@ -11,15 +11,26 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class LocaleListener implements EventSubscriberInterface {
     private $defaultLocale;
 
-    public function __construct($defaultLocale = 'en') {
+    private $availableLocales;
+
+    public function __construct($defaultLocale = 'en', $availableLocales = array('en')) {
         $this->defaultLocale = $defaultLocale;
+        $this->availableLocales = $availableLocales;
     }
 
     public function onKernelRequest(GetResponseEvent $event) {
 
         $request = $event->getRequest();
 
+        // If no session is present try to detect the right locale from the
+        // browser allowed locales.
         if (!$request->hasPreviousSession()) {
+            foreach ($request->getLanguages() as $locale) {
+                if (in_array($locale, $this->availableLocales)) {
+                    $request->getSession()->set('_locale', $locale);
+                    break;
+                }
+            }
             return;
         }
 
