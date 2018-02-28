@@ -23,11 +23,6 @@ class I18nPath extends Twig_Extension {
      */
     private $container;
 
-    /**
-     * @var EntityManager $em
-     */
-    private $em;
-
     /** @var  TranslatableService $translatableService */
     private $translatableService;
 
@@ -37,12 +32,10 @@ class I18nPath extends Twig_Extension {
 
     public function __construct(
         ContainerInterface $container,
-        EntityManager $em,
         TranslatableService $translatableService,
         RequestStack $requestStack
     ) {
         $this->container = $container;
-        $this->em = $em;
         $this->translatableService = $translatableService;
         $this->requestStack = $requestStack;
     }
@@ -110,7 +103,7 @@ class I18nPath extends Twig_Extension {
             if (!isset($params[$translatable_slug_param])) {
 
                 /** @var EntityRepository $repo */
-                $repo = $this->em->getRepository($translatable_class);
+                $repo = $this->container->get('doctrine.orm.default_entity_manager')->getRepository($translatable_class);
 
                 $params = array_merge($params, $router->matchRequest($request));
                 unset($params['_route']);

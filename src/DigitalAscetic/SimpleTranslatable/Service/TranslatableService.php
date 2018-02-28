@@ -8,8 +8,6 @@
 
 namespace DigitalAscetic\SimpleTranslatable\Service;
 
-
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use DigitalAscetic\SimpleTranslatable\Entity\Translatable;
 
@@ -21,17 +19,12 @@ class TranslatableService {
     /** @var  ContainerInterface $container */
     private $container;
 
-    /** @var  EntityManager $entityManager */
-    private $entityManager;
-
     /**
      * TranslatableService constructor.
      * @param ContainerInterface $container
-     * @param EntityManager $entityManager
      * @param array $locales
      */
-    public function __construct(ContainerInterface $container, EntityManager $entityManager, $locales) {
-        $this->entityManager = $entityManager;
+    public function __construct(ContainerInterface $container, $locales) {
         $this->container = $container;
         $this->locales = $locales;
     }
