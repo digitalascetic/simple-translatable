@@ -37,7 +37,7 @@ trait TranslatableBehaviour
         $this->locale = $locale;
     }
 
-    public function getTranslations(): ?ArrayCollection
+    public function getTranslations(): ArrayCollection
     {
         return $this->translations;
     }
