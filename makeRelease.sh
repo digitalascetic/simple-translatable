@@ -58,7 +58,7 @@ if [ -e package.zip ]
    rm package.zip;
 fi
 
-zip -r package.zip ./src CHANGELOG.md README.md composer.json
+zip -r package.zip ./config ./src CHANGELOG.md README.md composer.json
 
 echo
 echo "Uploading package to Gemfury"
