@@ -3,60 +3,42 @@
 namespace DigitalAscetic\SimpleTranslatable\Twig\Extension;
 
 use DigitalAscetic\SimpleTranslatable\Service\TranslatableService;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use JMS\I18nRoutingBundle\Router\I18nRouter;
 use DigitalAscetic\SimpleTranslatable\Entity\TranslatableBehaviour;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
-use Twig_Extension;
+use Symfony\Component\Routing\RouterInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-
-class I18nPath extends Twig_Extension {
-
-    /**
-     * @var ContainerInterface $container
-     */
-    private $container;
-
-    /**
-     * @var EntityManager $em
-     */
-    private $em;
-
-    /** @var  TranslatableService $translatableService */
-    private $translatableService;
-
-    /** @var  RequestStack $requestStack */
-    private $requestStack;
-
-
+class I18nPath extends AbstractExtension
+{
     public function __construct(
-        ContainerInterface $container,
-        EntityManager $em,
-        TranslatableService $translatableService,
-        RequestStack $requestStack
-    ) {
-        $this->container = $container;
-        $this->em = $em;
-        $this->translatableService = $translatableService;
-        $this->requestStack = $requestStack;
+        private ContainerInterface     $container,
+        private EntityManagerInterface $em,
+        private TranslatableService    $translatableService,
+        private RequestStack           $requestStack,
+        private RouterInterface        $router,
+    )
+    {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFunctions() {
+    public function getFunctions()
+    {
         return array(
-            new \Twig_SimpleFunction('path', array($this, 'getI18nPath')),
+            new TwigFunction('path', array($this, 'getI18nPath')),
         );
     }
 
-    public function getI18nPath($routeName = null, $params = null) {
+    public function getI18nPath($routeName = null, $params = null)
+    {
 
         $locale = null;
 
@@ -76,19 +58,14 @@ class I18nPath extends Twig_Extension {
 
         if (isset($params['_locale'])) {
             $locale = $params['_locale'];
-        }
-        else {
+        } else {
             $locale = $request->getLocale();
             if (!$locale) {
                 $locale = $this->container->getParameter('default_locale');
             }
         }
 
-        /** @var I18nRouter $router */
-        $router = $this->container->get('router');
-
-        /** @var RouteCollection $routeCollection */
-        $routeCollection = $router->getOriginalRouteCollection();
+        $routeCollection = $this->router->getRouteCollection();
 
         /** @var Route $route */
         $route = $routeCollection->get($routeName);
@@ -112,7 +89,7 @@ class I18nPath extends Twig_Extension {
                 /** @var EntityRepository $repo */
                 $repo = $this->em->getRepository($translatable_class);
 
-                $params = array_merge($params, $router->matchRequest($request));
+                $params = array_merge($params, $this->router->matchRequest($request));
                 unset($params['_route']);
 
                 /** @var TranslatableBehaviour $translatableEntity */
@@ -138,7 +115,7 @@ class I18nPath extends Twig_Extension {
 
         }
 
-        return $router->generate(
+        return $this->router->generate(
             $routeName,
             array_merge($params, array('_locale' => $locale))
         );
@@ -150,7 +127,8 @@ class I18nPath extends Twig_Extension {
      *
      * @return string The extension name
      */
-    public function getName() {
+    public function getName(): string
+    {
         return 'i18nRoute';
     }
 }

@@ -2,7 +2,7 @@
 
 namespace DigitalAscetic\SimpleTranslatable\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -11,14 +11,16 @@ use Symfony\Component\HttpFoundation\Request;
  * Project: simple-translatable
  * Date: 09/03/2017
  */
-class LocaleSwitcherController extends Controller {
+class LocaleSwitcherController extends AbstractController
+{
 
     /**
      * @param string $_locale
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function changeLocaleAction($_locale = 'en', Request $request) {
+    public function changeLocaleAction(string $_locale = 'en', Request $request)
+    {
 
         $this->get('session')->set('_locale', $_locale);
         $request->setLocale($_locale);
@@ -38,8 +40,7 @@ class LocaleSwitcherController extends Controller {
             }
 
             $response = new RedirectResponse($referer, 302);
-        }
-        // Otherwise redirect to the home.
+        } // Otherwise redirect to the home.
         else {
             $response = new RedirectResponse($request->getBaseUrl() . '/' . $_locale, 302);
         }

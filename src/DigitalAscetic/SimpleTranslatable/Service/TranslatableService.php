@@ -10,41 +10,29 @@ namespace DigitalAscetic\SimpleTranslatable\Service;
 
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use DigitalAscetic\SimpleTranslatable\Entity\Translatable;
 
-class TranslatableService {
-
-    /** @var  \string[] $locales */
-    private $locales;
-
-    /** @var  ContainerInterface $container */
-    private $container;
-
-    /** @var  EntityManager $entityManager */
-    private $entityManager;
-
+class TranslatableService
+{
     /**
      * TranslatableService constructor.
      * @param ContainerInterface $container
      * @param EntityManager $entityManager
      * @param array $locales
      */
-    public function __construct(ContainerInterface $container, EntityManager $entityManager, $locales) {
-        $this->entityManager = $entityManager;
-        $this->container = $container;
-        $this->locales = $locales;
+    public function __construct(private ContainerInterface $container, private EntityManagerInterface $entityManager, private array $locales)
+    {
     }
 
-    public function getTranslatedLocales(Translatable $entity, $includeSelf = true) {
-
-        /** @var Translatable $source */
+    public function getTranslatedLocales(Translatable $entity, $includeSelf = true)
+    {
         $source = $entity->getTranslationSource();
 
         if ($includeSelf) {
             $translatedLocales = array($entity->getLocale());
-        }
-        else {
+        } else {
             $translatedLocales = array();
         }
 
@@ -71,16 +59,16 @@ class TranslatableService {
 
     }
 
-    public function getUntranslatedLocales(Translatable $entity) {
-
+    public function getUntranslatedLocales(Translatable $entity): array
+    {
         return array_diff($this->locales, $this->getTranslatedLocales($entity, true));
-
     }
 
     /**
      * @return Translatable|null
      */
-    public function getTranslation(Translatable $entity, $locale) {
+    public function getTranslation(Translatable $entity, $locale): ?Translatable
+    {
 
         if ($entity->getLocale() == $locale) {
             return $entity;
@@ -92,8 +80,7 @@ class TranslatableService {
 
         if ($entity->getTranslationSource()) {
             $translations = $entity->getTranslationSource()->getTranslations();
-        }
-        else {
+        } else {
             $translations = $entity->getTranslations();
 
         }
@@ -111,7 +98,8 @@ class TranslatableService {
     /**
      * @return \string[]
      */
-    public function getLocales() {
+    public function getLocales(): array
+    {
         return $this->locales;
     }
 

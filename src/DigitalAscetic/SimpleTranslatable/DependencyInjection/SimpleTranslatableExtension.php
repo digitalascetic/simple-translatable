@@ -9,13 +9,15 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 
-class SimpleTranslatableExtension extends Extension implements PrependExtensionInterface {
+class SimpleTranslatableExtension extends Extension implements PrependExtensionInterface
+{
 
-    public function load(array $configs, ContainerBuilder $container) {
+    public function load(array $configs, ContainerBuilder $container)
+    {
 
         $loader = new XmlFileLoader(
             $container,
-            new FileLocator(__DIR__ . '/../Resources/config')
+            new FileLocator(__DIR__ . '/../../config')
         );
         $loader->load('services.xml');
 
@@ -26,7 +28,8 @@ class SimpleTranslatableExtension extends Extension implements PrependExtensionI
      *
      * @param ContainerBuilder $container
      */
-    public function prepend(ContainerBuilder $container) {
+    public function prepend(ContainerBuilder $container)
+    {
 
         $configs = $container->getExtensionConfig('jms_i18n_routing');
 

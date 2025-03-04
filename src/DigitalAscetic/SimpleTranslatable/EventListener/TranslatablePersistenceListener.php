@@ -10,26 +10,28 @@ namespace DigitalAscetic\SimpleTranslatable\EventListener;
 
 use DigitalAscetic\SimpleTranslatable\Entity\Translatable;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 
+class TranslatablePersistenceListener implements EventSubscriber
+{
 
-class TranslatablePersistenceListener implements EventSubscriber {
-
-    public function getSubscribedEvents() {
+    public function getSubscribedEvents(): array
+    {
         return array(
             Events::prePersist,
             Events::preUpdate
         );
     }
 
-    public function prePersist(LifecycleEventArgs $args) {
+    public function prePersist(PrePersistEventArgs $args)
+    {
 
-        if ($this->isTranslatable($args->getEntity())) {
+        if ($this->isTranslatable($args->getObject())) {
 
             /** @var Translatable $entity */
-            $entity = $args->getEntity();
+            $entity = $args->getObject();
 
             if ($entity->getTranslationSource() != $entity) {
 
@@ -38,12 +40,13 @@ class TranslatablePersistenceListener implements EventSubscriber {
         }
     }
 
-    public function preUpdate(PreUpdateEventArgs $eventArgs) {
+    public function preUpdate(PreUpdateEventArgs $eventArgs)
+    {
 
-        if ($this->isTranslatable($eventArgs->getEntity())) {
+        if ($this->isTranslatable($eventArgs->getObject())) {
 
             /** @var Translatable $entity */
-            $entity = $eventArgs->getEntity();
+            $entity = $eventArgs->getObject();
 
             if ($entity->getTranslationSource() != $entity) {
 
@@ -52,11 +55,8 @@ class TranslatablePersistenceListener implements EventSubscriber {
         }
     }
 
-    private function isTranslatable($entity) {
-        if ($entity && $entity instanceof Translatable) {
-            return true;
-        }
-
-        return false;
+    private function isTranslatable($entity): bool
+    {
+        return $entity && $entity instanceof Translatable;
     }
 }

@@ -1,24 +1,28 @@
 <?php
+
 namespace DigitalAscetic\SimpleTranslatable\EventListener;
 
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  *
  */
-class LocaleListener implements EventSubscriberInterface {
+class LocaleListener implements EventSubscriberInterface
+{
     private $defaultLocale;
 
     private $availableLocales;
 
-    public function __construct($defaultLocale = 'en', $availableLocales = array('en')) {
+    public function __construct($defaultLocale = 'en', $availableLocales = array('en'))
+    {
         $this->defaultLocale = $defaultLocale;
         $this->availableLocales = $availableLocales;
     }
 
-    public function onKernelRequest(GetResponseEvent $event) {
+    public function onKernelRequest(RequestEvent $event)
+    {
 
         $request = $event->getRequest();
 
@@ -46,7 +50,8 @@ class LocaleListener implements EventSubscriberInterface {
         $request->setLocale($locale);
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents(): array
+    {
         return array(
             // must be registered before the default Locale listener
             KernelEvents::REQUEST => array(array('onKernelRequest', 17)),

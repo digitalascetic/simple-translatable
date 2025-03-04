@@ -13,15 +13,18 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
  * This listener dynamically establish the correct mapping
  * for translatable entity relations
  */
-class TranslatableMappingListener implements EventSubscriber {
+class TranslatableMappingListener implements EventSubscriber
+{
 
-    public function getSubscribedEvents() {
+    public function getSubscribedEvents(): array
+    {
         return array(
             Events::loadClassMetadata
         );
     }
 
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs) {
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    {
 
         /** @var ClassMetadata $metadata */
         $metadata = $eventArgs->getClassMetadata();

@@ -10,11 +10,19 @@ namespace DigitalAscetic\SimpleTranslatable\Entity\Repository;
 
 
 use DigitalAscetic\SimpleTranslatable\Entity\Translatable;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class TranslatableRepository extends EntityRepository {
+class TranslatableRepository extends ServiceEntityRepository
+{
 
-    public function getTranslatedLocales(Translatable $entity) {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Translatable::class);
+    }
+
+    public function getTranslatedLocales(Translatable $entity)
+    {
 
         $translatedLocales = array();
 
@@ -30,7 +38,8 @@ class TranslatableRepository extends EntityRepository {
 
     }
 
-    public function getUntranslatedLocales(Translatable $entity) {
+    public function getUntranslatedLocales(Translatable $entity)
+    {
 
 
     }

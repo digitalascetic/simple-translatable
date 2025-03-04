@@ -12,67 +12,50 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
-trait TranslatableBehaviour {
+trait TranslatableBehaviour
+{
 
     /**
      * @var string The language of this entity ("es", "en" etc.)
-     *
-     * @ORM\Column(name="locale", type="string", length=2)
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(
-     *      min = 2,
-     *      max = 2
-     * )
      */
-    private $locale;
+    #[ORM\Column(name: "locale", type: "string", length: 2)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 2)]
+    private string $locale;
 
-    private $translationSource;
+    private ?Translatable $translationSource = null;
 
-    /** @var  ArrayCollection */
-    private $translations;
+    private ArrayCollection $translations;
 
-    /**
-     * @return mixed
-     */
-    public function getLocale() {
+    public function getLocale(): string
+    {
         return $this->locale;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTranslationSource() {
+    public function setLocale(string $locale): void
+    {
+        $this->locale = $locale;
+    }
+
+    public function getTranslations(): ?ArrayCollection
+    {
+        return $this->translations;
+    }
+
+    public function getTranslationSource(): Translatable
+    {
         if ($this->translationSource) {
             return $this->translationSource;
-        }
-        else {
+        } else {
             return $this;
         }
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getTranslations() {
-        return $this->translations;
-    }
-
-    /**
-     * @param mixed $translationSource
-     */
-    public function setTranslationSource(Translatable $translationSource = null) {
+    public function setTranslationSource(Translatable $translationSource = null)
+    {
         if ($translationSource != null) {
             $this->translationSource = $translationSource;
             $this->translationSource->getTranslations()->add($this);
         }
     }
-
-    /**
-     * @param mixed $locale
-     */
-    public function setLocale($locale) {
-        $this->locale = $locale;
-    }
-
 }
