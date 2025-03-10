@@ -21,6 +21,13 @@ class SimpleTranslatableExtension extends Extension implements PrependExtensionI
         );
         $loader->load('services.xml');
 
+        $config = $this->processConfiguration(new Configuration(), $configs);
+
+        $locales = $config['locales'];
+        $defaultLocale = $config['default_locale'];
+
+        $container->setParameter('simple_translatable.locales', $locales);
+        $container->setParameter('simple_translatable.default_locale', $defaultLocale);
     }
 
     /**
@@ -30,25 +37,6 @@ class SimpleTranslatableExtension extends Extension implements PrependExtensionI
      */
     public function prepend(ContainerBuilder $container)
     {
-
-        $configs = $container->getExtensionConfig('jms_i18n_routing');
-
-        if ($configs && count($configs) && isset($configs[0]['locales'])) {
-
-            $locales = $configs[0]['locales'];
-
-            $twigBundleConfig = array(
-                'globals' => array(
-                    'locales' => $locales
-                )
-            );
-
-            $container->prependExtensionConfig('twig', $twigBundleConfig);
-
-            $container->setParameter('simple_translatable.locales', $locales);
-            $container->setParameter('simple_translatable.default_locale', $configs[0]['default_locale']);
-
-        }
 
     }
 
