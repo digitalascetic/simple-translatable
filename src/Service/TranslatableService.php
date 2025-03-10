@@ -9,10 +9,10 @@
 namespace DigitalAscetic\SimpleTranslatable\Service;
 
 
+use DigitalAscetic\SimpleTranslatable\Entity\Translatable;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use DigitalAscetic\SimpleTranslatable\Entity\Translatable;
 
 class TranslatableService
 {

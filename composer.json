@@ -1,6 +1,6 @@
 {
   "name": "digitalascetic/simple-translatable",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "license": "Proprietary",
   "type": "library",
   "description": "Makes your entities translatables",
@@ -12,7 +12,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "": "src/"
+      "DigitalAscetic\\SimpleTranslatable\\": "src/"
     }
   },
   "require": {

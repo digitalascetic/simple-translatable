@@ -1,11 +1,11 @@
 <?php
 
-namespace DigitalAscetic\SimpleTranslatable\Twig\Extension;
+namespace DigitalAscetic\SimpleTranslatable\Extension;
 
+use DigitalAscetic\SimpleTranslatable\Entity\TranslatableBehaviour;
 use DigitalAscetic\SimpleTranslatable\Service\TranslatableService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use DigitalAscetic\SimpleTranslatable\Entity\TranslatableBehaviour;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

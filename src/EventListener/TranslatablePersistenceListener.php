@@ -11,8 +11,8 @@ namespace DigitalAscetic\SimpleTranslatable\EventListener;
 use DigitalAscetic\SimpleTranslatable\Entity\Translatable;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\PrePersistEventArgs;
-use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Events;
 
 class TranslatablePersistenceListener implements EventSubscriber
 {

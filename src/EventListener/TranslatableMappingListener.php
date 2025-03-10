@@ -4,10 +4,10 @@ namespace DigitalAscetic\SimpleTranslatable\EventListener;
 
 
 use DigitalAscetic\SimpleTranslatable\Entity\Translatable;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Events;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 /**
  * This listener dynamically establish the correct mapping
