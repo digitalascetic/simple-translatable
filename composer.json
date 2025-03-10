@@ -1,6 +1,6 @@
 {
   "name": "digitalascetic/simple-translatable",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "license": "Proprietary",
   "type": "library",
   "description": "Makes your entities translatables",
@@ -17,7 +17,6 @@
   },
   "require": {
     "php": "^8.1.0",
-    "jms/i18n-routing-bundle": "^3.1",
     "symfony/framework-bundle": "^6.4",
     "symfony/orm-pack": "*",
     "symfony/twig-bundle": "*",
