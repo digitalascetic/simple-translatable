@@ -1,6 +1,6 @@
 <?php
 
-namespace DigitalAscetic\SimpleTranslatable\Extension;
+namespace DigitalAscetic\SimpleTranslatable\Twig;
 
 use DigitalAscetic\SimpleTranslatable\Entity\TranslatableBehaviour;
 use DigitalAscetic\SimpleTranslatable\Service\TranslatableService;

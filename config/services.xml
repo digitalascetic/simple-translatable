@@ -23,7 +23,7 @@
             <tag name="doctrine.event_subscriber"/>
         </service>
 
-        <service id="simple_translatable.i18nPath" class="DigitalAscetic\SimpleTranslatable\Twig\Extension\I18nPath"
+        <service id="simple_translatable.i18nPath" class="DigitalAscetic\SimpleTranslatable\Twig\I18nPath"
                  public="false">
             <tag name="twig.extension"/>
             <argument type="service" id="service_container"/>
@@ -33,7 +33,7 @@
         </service>
 
         <service id="simple_translatable.i18nContent"
-                 class="DigitalAscetic\SimpleTranslatable\Twig\Extension\I18nContent"
+                 class="DigitalAscetic\SimpleTranslatable\Twig\I18nContent"
                  public="false">
             <tag name="twig.extension"/>
             <argument type="service" id="simple_translatable.translatable_service"/>
