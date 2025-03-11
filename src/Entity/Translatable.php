@@ -9,13 +9,13 @@
 namespace DigitalAscetic\SimpleTranslatable\Entity;
 
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 interface Translatable
 {
     public function getTranslationSource(): Translatable;
 
-    public function getTranslations(): ArrayCollection;
+    public function getTranslations(): Collection;
 
     public function getLocale(): string;
 }

@@ -1,6 +1,6 @@
 {
   "name": "digitalascetic/simple-translatable",
-  "version": "6.0.9",
+  "version": "6.0.10",
   "license": "Proprietary",
   "type": "library",
   "description": "Makes your entities translatables",
