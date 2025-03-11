@@ -8,7 +8,7 @@
 
 namespace DigitalAscetic\SimpleTranslatable\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,7 +25,7 @@ trait TranslatableBehaviour
 
     private ?Translatable $translationSource = null;
 
-    private ArrayCollection $translations;
+    private Collection $translations;
 
     public function getLocale(): string
     {
@@ -37,7 +37,7 @@ trait TranslatableBehaviour
         $this->locale = $locale;
     }
 
-    public function getTranslations(): ArrayCollection
+    public function getTranslations(): Collection
     {
         return $this->translations;
     }
