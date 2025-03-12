@@ -14,6 +14,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('add_locale_route_param')->defaultFalse()->end()
                 ->scalarNode('default_locale')->isRequired()->end()
                 ->arrayNode('locales')
                     ->requiresAtLeastOneElement()

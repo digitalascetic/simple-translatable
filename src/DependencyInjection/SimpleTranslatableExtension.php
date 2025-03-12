@@ -25,9 +25,11 @@ class SimpleTranslatableExtension extends Extension implements PrependExtensionI
 
         $locales = $config['locales'];
         $defaultLocale = $config['default_locale'];
+        $addLocaleRoute = $config['add_locale_route_param'];
 
         $container->setParameter('simple_translatable.locales', $locales);
         $container->setParameter('simple_translatable.default_locale', $defaultLocale);
+        $container->setParameter('simple_translatable.add_locale_route', $addLocaleRoute);
     }
 
     /**

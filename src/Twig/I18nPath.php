@@ -23,6 +23,7 @@ class I18nPath extends AbstractExtension
         private TranslatableService    $translatableService,
         private RequestStack           $requestStack,
         private RouterInterface        $router,
+        private bool                   $addLocaleRouteParam
     )
     {
     }
@@ -115,9 +116,13 @@ class I18nPath extends AbstractExtension
 
         }
 
+        if ($this->addLocaleRouteParam) {
+            $params = array_merge($params, array('_locale' => $locale));
+        }
+
         return $this->router->generate(
             $routeName,
-            array_merge($params, array('_locale' => $locale))
+            $params
         );
 
     }
